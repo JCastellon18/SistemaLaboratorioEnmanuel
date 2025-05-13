@@ -1,0 +1,141 @@
+﻿@model SistemaLaboratorioEnmanuel.Models.ViewModels.RegistrarResultadoViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    ViewBag.Title = "Registrar Resultados";
+}
+
+@Html.Partial("Modales/ModalContenedor")
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>}
+
+<div class="row">
+    <div class="col-12 mb-4">
+        <!-- Inicio Encabezado -->
+        <div class="card-plantilla">
+            <div class="card-header-plantilla">
+                <h1 class="card-titulo-plantilla">Registrar Resultados</h1>
+            </div>
+        </div>
+        <!-- Fin Encabezado -->
+    </div>
+
+    <section class="section">
+        <div class="col-12">
+            <div class="card p-4">
+                <div class="card-body">
+                    <p>Perfil: @Model.PerfilNombre</p>
+
+                    <!-- Formulario para Registrar Resultados -->
+                    <form action="@Url.Action("GuardarResultados", "Resultado")" method="post">
+                        <input type="hidden" name="IdDetalleOrden" value="@Model.IdDetalleOrden" />
+                        <input type="hidden" name="IdOrden" value="@Model.IdOrden" />
+                        <div class="table-responsive-sm">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Examen</th>
+                                        <th>Resultado</th>
+                                        <th>Valores Normales</th>
+                                        <th>Unidad</th>
+                                        <th>Valor de Referencia</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (var i = 0; i < Model.Examenes.Count; i++)
+                                    {
+
+                                        <tr>
+                                            <td>
+                                                @Model.Examenes[i].NombreExamen
+                                                <input type="hidden" name="Examenes[@i].NombreExamen" value="@Model.Examenes[i].NombreExamen" />
+                                                <input type="hidden" name="Examenes[@i].ExamenId" value="@Model.Examenes[i].ExamenId" />
+                                            </td>
+                                            <td>
+                                                <input type="text" name="Examenes[@i].Resultado" class="form-control" required />
+                                            </td>
+                                            <td>
+                                                <input type="text" name="Examenes[@i].ValoresNormales" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <input type="text" name="Examenes[@i].Unidad" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <input type="text" name="Examenes[@i].ValorReferencia" class="form-control" />
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <button type="submit" class="btn btn-success mt-3" formaction="@Url.Action("GuardarResultados", "Resultado")">Guardar Resultados</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Tabla de Resultados Registrados -->
+<div class="row mt-4">
+    <section class="section">
+        <div class="col-12">
+            <div class="card p-4">
+                <div class="card-body">
+                    <div class="table-responsive-sm">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Examen</th>
+                                    <th>Resultado</th>
+                                    <th>Valores Normales</th>
+                                    <th>Unidad</th>
+                                    <th>Valor de Referencia</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var resultado in Model.ResultadosRegistrados)
+                                {
+                                    <tr>
+                                        <td>@resultado.NombreExamen</td>
+                                        <td>@resultado.Resultado</td>
+                                        <td>@resultado.ValoresNormales</td>
+                                        <td>@resultado.Unidad</td>
+                                        <td>@resultado.ValorReferencia</td>
+                                        <td>
+                                            <!-- Botón para Editar -->
+                                            <button type="button" onclick="EditarResultado(@resultado.Id)" class="btn btn-primary bi bi-pencil-fill" data-bs-toggle="modal" data-bs-target="#ContenedorGeneralId"></button>
+
+                                            <!-- Botón para Eliminar -->
+                                            <form method="post" action="@Url.Action("EliminarResultado", "Resultado")" style="display:inline;">
+                                                <input type="hidden" name="id" value="@resultado.Id" />
+                                                <button type="submit" class="btn btn-danger bi bi-trash-fill ms-2"></button>
+                                            </form>
+                                            <form method="post" action="@Url.Action("RegistrarSalida", "Inventario")" style="display:inline;">
+                                                <input type="hidden" name="idResultado" value="@resultado.Id" />
+                                                <input type="hidden" name="IdDetalleOrden" value="@Model.IdDetalleOrden" />
+                                                <input type="hidden" name="IdOrden" value="@Model.IdOrden" />
+
+                                                <button type="submit" class="btn btn-success bi bi-droplet-half ms-2"></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script src="~/Scripts/Resultado/Resultado.js"></script>

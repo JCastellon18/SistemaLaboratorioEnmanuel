@@ -1,0 +1,63 @@
+﻿@model SistemaLaboratorioEnmanuel.Models.ViewModels.OrdenesParaResultado
+
+@{
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    ViewBag.Title = "Registrar Resultados";
+}
+
+
+<div class="row">
+    <div class="col-12 mb-4">
+        <!-- Inicio Encabezado -->
+        <div class="card-plantilla">
+            <div class="card-header-plantilla">
+                <h1 class="card-titulo-plantilla">Registrar Resultados</h1>
+            </div>
+        </div><!-- Fin encabezado -->
+
+        <div class="head-table col-sm-12">
+            <div class="input-group head-table" style="float: right">
+                <a class="btn btn-primary" target="_blank" href="@Url.Action("GenerarExamen", "Resultado", new { OrdenId = Model.IdOrden})" style="background: #d63031 ">PDF <span class="bi bi-file-earmark-pdf-fill"></span></a>
+            </div>
+        </div> <!-- Fin head tabla -->
+
+    </div>
+
+    <section class="section">
+        <div class="col-12">
+            <div class="card p-4">
+                <div class="card-body">
+                    @if (ViewBag.IdOrden != null)
+                    {
+                        <p>Mostrando exámenes para la orden con ID: @ViewBag.IdOrden</p>
+                    }
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nombre del Perfil</th>
+                                <th>Examen</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ExamenesOrden)
+                            {
+                                <tr>
+                                    <td>@item.PerfilExamen.Perfil.NombrePerfil</td> <!-- Relación con Perfil -->
+                                    <td>@item.PerfilExamen.Examen.NombreTipoExamen</td> <!-- Relación con Examen -->
+                                    <td>
+                                        <a class="btn btn-primary" href="@Url.Action("RegistrarResultado", "Resultado", new { idDetalleOrden = item.Id })">Registrar Resultado</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+

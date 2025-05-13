@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewBag.Title = "Examenes";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css" integrity="sha512-ARJR74swou2y0Q2V9k0GbzQ/5vJ2RBSoCWokg4zkfM29Fb3vZEQyv0iWBMW/yvKgyHSR/7D64pFMmU8nYmbRkg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<div class="row">
+    <div class="col-12">
+        <!-- Inicio Encabezado -->
+        <div class="card-plantilla">
+            <div class="card-header-plantilla">
+                <h1 class="card-titulo-plantilla">EXAMENES</h1>
+            </div>
+        </div><!-- Fin encabezado -->
+        <!-- Inicio Barra Busqueda -->
+        <!--<div class="barra-busqueda col-sm-12">
+            <div class="input-group">
+                <input class="form-control" type="text" id="txtNombre" tabindex="1" placeholder="Buscar Examen" />
+                <button class="btn btn-primary btn-personalizados me-1 bi-search" id="btnBuscarExamen" tabindex="2"> </button>
+                <button class="btn btn-primary btn-personalizados bi-eraser-fill" id="btnLimpiar" tabindex="3"> </button>
+            </div>
+        </div>--> <!-- Fin barra busqueda -->
+        <!-- Inicio head tabla -->
+        <div class="head-table col-sm-12">
+            <div class="input-group head-table" style="float: right">
+                @*<a class="btn btn-primary me-1" href="@Url.Action("GenerarExcel", "Examen")" style="background: #1f7b2d">Excel <span class="bi bi-file-earmark-ruled-fill"></span></a>*@
+                <!-- Boton de ventana modal -->
+                <button type="button" onclick="abrirModal(0)" class="btn btn-primary btn-personalizados float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Agregar
+                </button> <!-- Fin Boton de ventana modal -->
+            </div>
+        </div> <!-- Fin head tabla -->
+    </div>
+    <!-- Modal para boton agregar -->
+    <div class="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Nuevo Examen</h1>
+                </div>
+                <div class="modal-body">
+                    <table style="width:80%; margin:auto">
+                        <tr>
+                            <td width="40%" hidden>Id Examen</td>
+                            <td width="60%" hidden class="borrar"><input type="text" id="txtIdExamen" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td width="30%">Nombre De Examen</td>
+                            <td width="50%"><input class="obligatorio borrar form-control" type="text" id="txtNombreExamen" /></td>
+                        </tr>
+                        <tr>
+                            <td width="20%">Descripción</td>
+                            <td width="60%"><input class="obligatorio borrar form-control" type="text" id="txtDescripcionExamen" /></td>
+                        </tr>
+                        <tr>
+                            <td width="20%">Precio Examen</td>
+                            <td width="60%"><input class="obligatorio borrar form-control" type="text" id="txtPrecioExamen" /></td>
+                        </tr>
+                        <tr>
+                            <td width="40%">Area</td>
+                            <td width="60%">
+                                <select class="form-control" data-live-search="true" id="cboArea">
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnCancelar" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" onclick="Agregar()" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para boton editar -->
+    <div class="modal fade" id="EditarModal" aria-labelledby="ModalEditar" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Examen</h1>
+                </div>
+                <div class="modal-body">
+                    <table style="width:80%; margin:auto">
+                        <tr>
+                            <td hidden width="40%">Id Examen</td>
+                            <td hidden width="60%" class="borrar hidden"><input type="text" id="txtIdExamenEditar" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td width="40%">Nombre De Examen</td>
+                            <td width="60%" class="obligatorio borrar"><input type="text" id="txtNombreExamenEditar" class="form-control" /></td>
+                        </tr>
+                        <tr>
+                            <td width="40%">Descripción</td>
+                            <td width="60%" class="obligatorio borrar"><input type="text" id="txtDescripcionExamenEditar" class="form-control" /></td>
+                        </tr>
+                        <tr>
+                            <!--Input de Precio de examen-->
+                            <td width="40%">Precio Examen</td>
+                            <td width="60%" class="obligatorio borrar"><input type="text" id="txtPrecioExamenEditar" class="form-control" /></td>
+                        </tr>
+                        <tr>
+                            <td width="40%">Area</td>
+                            <td width="60%">
+                                <select id="cboAreaEditar" class="form-select" data-live-search="true">
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnCancelarEditar" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" onclick="Editar()" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Tabla Areas-->
+<section class="section">
+    <div class="col-lg-12">
+        <div class="card p-2">
+            <div class="card-body pt-3">
+                <div class="table-responsive-sm" id="divTablas">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre Examen</th>
+                                <th>Descripción</th>
+                                <th>Precio Examen</th>
+                                <th>Area</th>
+                                <th>Estado</th>
+                                <th>Operaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@*Archivos JS*@
+@*<script src="~/Content/DashboardContent/js/jquery-3.3.1.min.js"></script>*@
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/Examenes/Examenes.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/i18n/defaults-es_ES.min.js"></script>
+
+@*<script src="~/Scripts/limonte-sweetalert2/sweetalert2.min.js"></script>*@
+<script src="~/Content/DashboardContent/js/datatables.min.js"></script>
+@*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>*@
+
+

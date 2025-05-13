@@ -1,0 +1,22 @@
+﻿@model List<SistemaLaboratorioEnmanuel.Models.Area>
+
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Area</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody id="">
+
+        @foreach (var item in Model)
+        {
+            <tr class="">
+                <td class="text-center">@item.Id</td>
+                <td>@item.NombreArea</td>
+                <td class="text-center"><button class="btn btn-primary btn-sm btn-personalizados" onclick="AgregarArea(@item.Id,@String.Concat("'", item.NombreArea, "'"))"><span class="bi bi-plus-circle-fill"></span></button></td>
+            </tr>
+        }
+    </tbody>
+</table>

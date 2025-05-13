@@ -1,0 +1,205 @@
+﻿@{
+    ViewBag.Title = "Crear Perfil";
+    ViewBag.TituloModalConetendor = "Areas";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    SistemaLaboratorioEnmanuel.Util.ListUtil.ExamenesPerfilTemp.Clear();
+}
+@Html.Partial("Modales/ModalContenedor")
+<div class="row">
+    <div class="col-12 mb-4">
+        <!-- Inicio Encabezado -->
+        <div class="card-plantilla">
+            <div class="card-header-plantilla">
+                <h1 class="card-titulo-plantilla">Crear Perfil</h1>
+            </div>
+        </div><!-- Fin encabezado -->
+    </div>
+
+    <section class="section">
+        <div class="col-12">
+            <div class="card p-4">
+                <div class="card-body">
+                    <div class="row justify-content-between">
+                        <div class="col-lg-3 col-sm-12">
+                            <div class="form-group">
+                                <label class="mb-2">Area</label>
+                                <div class="input-group mb-3">
+                                    <button class="btn btn-secondary btn-sm" type="button" id="btnLimpiarAreaPerfil" onclick="LimpiartxtArea()" disabled><span class="bi bi-x"></span></button>
+                                    <input class="form-control" type="text" id="NombreAreaPerfil" value="" disabled/>
+                                    <button class="btn btn-primary" onclick="ListarAreas()" type="button" id="btnBuscarArea" data-bs-toggle="modal" data-bs-target="#ContenedorGeneralId"><span class="bi bi-search"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-sm-12">
+                            @using (Html.BeginForm("Create", "Perfil", FormMethod.Post)) 
+                            {
+                                <div class="row justify-content-between">
+                                    <div class="col-lg-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="mb-2">Nombre del Perfil</label>
+                                            <div class="input-group mb-3">
+                                                <input class="form-control" type="text" name="NombrePerfil" id="NombrePerfil" value="" required/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-5 col-sm-12">
+
+                                        <div class="form-group">
+                                            <label class="mb-2">Descripción</label>
+                                            <div class="input-group mb-3">
+                                                <input class="form-control" type="text" name="Descripcion" id="Descripcion" value="" required/>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="align-content-center col-lg-2 col-sm-12">
+                                        <input type="hidden" id="IdAreaPerfil" name="AreaId" />
+                                        <input type="submit" class="btn btn-primary" value="Guardar" />
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                    <div class="row justify-content-between mt-5">
+                        <hr />
+                        <!-- Tabla origen -->
+                        <div class="px-lg-3 col-lg-5 col-sm-12">
+                            <span>Examenes de Area</span>
+                            <hr />
+                            <div class="my-3 px-lg-5">
+                                <div class="table-responsive-sm">
+                                    <table class="table" style="width: 100%; margin: auto">
+                                        <thead>
+                                            <tr class="text-dark text">
+                                                <th class="" scope="col" width="70%">Examen</th>
+                                                <th class="text-center" scope="col" width="30%">Agregar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="TablaListaExamnesArea">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Tabla destino -->
+                        <div class="px-lg-3 col-lg-5 col-sm-12">
+                            <span>Examenes de Perfil</span>
+                            <hr />
+                            <div class="my-3 px-lg-5">
+
+                                <div class="table-responsive-sm">
+                                    <table class="table" style="width: 100%; margin: auto">
+                                        <thead>
+                                            <tr class="text-dark text">
+                                                <th class="" scope="col" width="70%">Examen</th>
+                                                <th class="text-center" scope="col" width="30%">Agregar</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody id="TablaListaExamnesPerfil">
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+
+<script type="text/javascript">
+    //Funcion que carga las Areas en el modal
+    function ListarAreas() {
+       let url = "@Url.Action("ListaAreas", "Perfil")";
+       //let mapeado = { PerfilId: id };
+
+        $.post(url).done(function (data) {
+            $("#IdModalContenedorTabla").html(data)
+        });
+    }
+
+    //Funcion que mustra el area que escogimos y posteriormente carga los examenes de esa area
+    function AgregarArea(AreaId, NombreArea) {
+
+        document.getElementById("IdAreaPerfil").value = AreaId;
+        document.getElementById("NombreAreaPerfil").value = NombreArea;
+
+        $("#btnLimpiarAreaPerfil").removeClass("btn-secondary");
+        $("#btnLimpiarAreaPerfil").addClass("btn-danger");
+        $("#btnLimpiarAreaPerfil").prop("disabled", false);
+        document.getElementById("btnCancelarContenedor").click();
+
+        $("#TablaListaExamnesPerfil").html("");
+        CargarExamenesArea(AreaId);
+    }
+
+
+    //Limpia todos los elementos superiores y de ambas listas
+    function LimpiartxtArea() {
+        $("#btnLimpiarAreaPerfil").prop("disabled", true);
+        $("#btnLimpiarAreaPerfil").removeClass("btn-danger");
+        $("#btnLimpiarAreaPerfil").addClass("btn-secondary");
+        document.getElementById("NombreAreaPerfil").value = ""
+        document.getElementById("IdAreaPerfil").value = "";
+        $("#TablaListaExamnesArea").html("");
+        $("#TablaListaExamnesPerfil").html("");
+
+    }
+
+    //Carga los examenes de esa area
+    function CargarExamenesArea(AreaId) {
+        let url = "@Url.Action("ListaExamenesArea", "Perfil")";
+        let mapeado = { AreaId: AreaId };
+
+        $.post(url, mapeado).done(function (data) {
+            $("#TablaListaExamnesArea").html(data)
+        });
+    }
+
+    //Carga el examen del area añ perfil pero antes valida si ya existe
+    function CargarExamenPerfil(ExamenId, NombreExamen) {
+
+        let url = "@Url.Action("AddExamenTemp", "Perfil")";
+        let mapeado = { ExamenId: ExamenId };
+
+
+        $.post(url, mapeado).done(function (data) {
+            if (data == 0) {
+                let nuevaFila =
+                    "<tr id='" + ExamenId + "'>" +
+                    "<td width='70%'>" + NombreExamen + "</td>" +
+                    "<td width='30%' class='text-center'><button onclick='EliminaExamenPerfil(" + ExamenId + ")' class='btn btn-sm btn-danger'><i class='bi bi-x-circle-fill'></i></button></td>" +
+                    "</tr>";
+
+                $("#TablaListaExamnesPerfil").append(nuevaFila);
+            }
+        });
+    }
+
+    //Función que elimina los examenes temporales
+    function EliminaExamenPerfil(ExamenId) {
+        let url = "@Url.Action("RemoveExamenTemp", "Perfil")";
+        let mapeado = { ExamenId: ExamenId };
+
+
+        $.post(url, mapeado).done(function (data) {
+            if (data == 1) {
+                $("#" + ExamenId).remove();
+            }
+        });
+
+    }
+
+
+</script>

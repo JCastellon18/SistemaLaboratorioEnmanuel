@@ -1,0 +1,22 @@
+﻿@model List<SistemaLaboratorioEnmanuel.Models.Proveedor>
+
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Proveedor</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody id="">
+
+        @foreach (var item in Model)
+        {
+            <tr class="">
+                <td class="text-center">@item.Id</td>
+                <td>@item.NombreProveedor</td>
+                <td class="text-center"><button class="btn btn-sm btn-primary btn-personalizados" onclick="AgregarProveedor(@item.Id,@String.Concat("'", item.NombreProveedor, "'"))"><span class="bi bi-plus-circle-fill"></span></button></td>
+            </tr>
+        }
+    </tbody>
+</table>

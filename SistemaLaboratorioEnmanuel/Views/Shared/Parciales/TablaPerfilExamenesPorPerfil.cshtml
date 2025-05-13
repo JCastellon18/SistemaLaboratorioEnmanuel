@@ -1,0 +1,20 @@
+﻿@model List<SistemaLaboratorioEnmanuel.Models.PerfilExamen>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>    
+            <th>Id</th>
+            <th>Examen</th>
+        </tr>
+    </thead>
+    <tbody id="">
+
+        @foreach (var item in Model)
+        {
+            <tr class="">
+                <td class="text-center">@item.Examen.Id</td>
+                <td>@item.Examen.NombreTipoExamen</td>
+            </tr>
+        }
+    </tbody>
+</table>

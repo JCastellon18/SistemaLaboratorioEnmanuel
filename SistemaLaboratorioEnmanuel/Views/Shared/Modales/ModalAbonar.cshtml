@@ -1,0 +1,48 @@
+﻿<div class="modal fade" id="abrirModalAbonar" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Abonos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <div class="row mb-3">
+                    <label for="Monto" class="col-sm-5 col-form-label">Cantidad a Abonar: </label>
+                    <div class="col-sm-7">
+                        <input name="Monto" id="Monto" type="number" class="form-control"> <!--Aqui esta el monto-->
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button> 
+                <input class="btn btn-primary" onclick="ValidarMonto()" id="btnGuardarAbono" type="submit" value="Guardar">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    let v_deuda_actual =0;                                      //Declaramos una variable cuyo ambito es global dentro del script actual
+    function ModalClick(idfact, duada_tot) {
+        document.getElementById("IdFactura").value = idfact;    //Le pasamos el Id de la factura al text hiden
+        v_deuda_actual = duada_tot;                             //Le pasamos la deuda total                        
+    };
+
+    function ValidarMonto() {
+        let v_abono = 0;
+        v_abono = document.getElementById("Monto").value;           //Obtenemos el monto del abono
+        if (v_abono > v_deuda_actual) {                             //Validamos que el abono sea mayor que la deuda
+            document.getElementById("Monto").value = v_deuda_actual;    //El abono sera igual a la deuda
+            alert("El cambio del abono es de: " + (v_abono - v_deuda_actual));  //Mandamos una alerta con el restante del abono
+        }
+    };
+
+</script>
+
+

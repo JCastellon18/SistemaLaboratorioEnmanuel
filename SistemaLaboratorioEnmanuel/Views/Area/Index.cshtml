@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewBag.Title = "Areas";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <!-- Inicio Encabezado -->
+        <div class="card-plantilla">
+            <div class="card-header-plantilla">
+                <h1 class="card-titulo-plantilla">AREAS</h1>
+            </div>
+        </div><!-- Fin encabezado -->
+        <!-- Inicio Barra Busqueda -->
+        <!--<div class="barra-busqueda col-sm-12">
+            <div class="input-group">
+                <input class="form-control" type="text" id="txtNombre" tabindex="1" placeholder="Buscar Area" />
+                <button class="btn btn-primary btn-personalizados me-1 bi-search" id="btnBuscarArea" tabindex="2"> </button>
+                <button class="btn btn-primary btn-personalizados bi-eraser-fill" id="btnLimpiar" tabindex="3"> </button>
+            </div>
+        </div>--> <!-- Fin barra busqueda -->
+        <!-- Inicio Head tabla -->
+        <div class="head-table col-sm-12">
+            <div class="input-group head-table" style="float: right">
+                @*<a class="btn btn-primary me-1" href="@Url.Action("GenerarExcel", "Area")" style="background: #1f7b2d">Excel <span class="bi bi-file-earmark-ruled-fill"></span></a>*@
+                <!-- Boton de ventana modal -->
+                <button type="button" onclick="abrirModal(0)" class="btn btn-primary btn-personalizados float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Agregar
+                </button> <!-- Fin Boton de ventana modal -->
+            </div>
+        </div> <!-- Fin head tabla -->
+    </div>
+    <!-- Modal para boton agregar -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Nueva Área</h1>
+                </div>
+                <div class="modal-body">
+                    <table style="width:80%; margin:auto">
+                        <tr class="hidden">
+                            <td width="40%" hidden>Id Area</td>
+                            <td width="60%" hidden><input class="limpiar" type="text" id="txtIdArea" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td width="40%">Nombre De Area</td>
+                            <td width="60%"><input class="limpiar obligatorio form-control" type="text" id="txtNombreArea" required /></td>
+                        </tr>
+                        <tr>
+                            <td width="40%">Descripción</td>
+                            <td width="60%"><input class="limpiar obligatorio form-control" type="text" id="txtDescripcionArea" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnCancelarAgregar" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button onclick="Agregar()" type="button" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para el boton editar -->
+    <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Área</h1>
+                </div>
+                <div class="modal-body">
+                    <table style="width:80%; margin:auto">
+                        <tr class="hidden">
+                            <td width="40%" hidden>Id Area</td>
+                            <td width="60%" hidden><input class="limpiar" type="text" id="txtIdAreaEditar" readonly /></td>
+                        </tr>
+                        <tr>
+                            <td width="40%">Nombre De Area</td>
+                            <td width="60%"><input class="limpiar obligatorioE form-control" type="text" id="txtNombreAreaEditar" /></td>
+                        </tr>
+                        <tr>
+                            <td width="40%">Descripción</td>
+                            <td width="60%"><input class="limpiar obligatorioE form-control" type="text" id="txtDescripcionAreaEditar" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnCancelarEditar" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button onclick="Editar()" type="button" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Tabla Areas-->
+<section class="section">
+    <div class="col-lg-12">
+        <div class="card p-2">
+            <div class="card-body pt-3">
+                <div class="table-responsive-sm" id="divTablaArea">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre Area</th>
+                                <th>Descripción</th>
+                                <th>Estado</th>
+                                <th>Operaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div><!--Fin Tabla Areas-->
+</section>
+@*Archivos JS*@
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/Areas/ListaAreas.js"></script>
+<script type="text/javascript">
+
+</script>

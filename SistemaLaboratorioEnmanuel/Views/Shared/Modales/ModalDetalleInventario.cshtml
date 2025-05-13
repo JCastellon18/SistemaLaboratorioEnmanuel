@@ -1,0 +1,45 @@
+﻿<div class="modal fade" id="abrirModalDetalleInv" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalle de disponibilidad</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <span>Restante de insumo en uso:</span>
+
+                    </div>
+                    <div class="col-6">
+                        <span id="detalleInvRestante"></span>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">          
+    function ModalDetalleInv(stock, sobrante, unidadMedida) {
+        if (stock > 0) {
+            document.getElementById("detalleInvRestante").innerHTML = sobrante + " " + unidadMedida;
+        }
+        else {
+            document.getElementById("detalleInvRestante").innerHTML = 0 + " " + unidadMedida;
+        }
+        
+    };
+</script>
+
+

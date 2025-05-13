@@ -1,0 +1,118 @@
+﻿@model SistemaLaboratorioEnmanuel.Models.Empresa
+@{
+    ViewBag.Title = "Nueva Empresa";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+@Html.Partial("Modales/ModalContenedor")
+
+<div class="container-fluid">
+    <div class="row">
+        <section>
+            <div class="col-12 mb-4">
+                <!-- Inicio Encabezado -->
+                <div class="card-plantilla">
+                    <div class="card-header-plantilla">
+                        <h1 class="card-titulo-plantilla">Empresa</h1>
+                    </div>
+                </div><!-- Fin encabezado -->
+            </div>
+        </section>
+        <section class="section">
+            <div class="col-12">
+                <div class="card p-4">
+                    <div class="card-body">
+                        @using (Html.BeginForm("Add", "Empresa", FormMethod.Post, new { id = "idForm", enctype = "multipart/form-data" }))
+                        {
+                            <input type="hidden" value="@Model.Id" name="Id"/>
+                            <div class="row mb-2 mt-3">
+
+                                <div class="form-group col-md-4">
+                                    <div class="grupo_campos">
+                                        <label class="labels-create">Nombre Empresa</label>
+                                        @Html.TextBoxFor(x => x.NombreEmpresa, new { @class = "form-control", id = "txtNombreEmpresa", required = "required" })
+                                        @*<input type="text" class="form-control" id="txtNombreEmpresa" name="txtNombreEmpresa" required />*@
+                                    </div>
+                                    <div class="grupo_campos">
+                                        <label class="labels-create">Dirección</label>
+                                        @Html.TextBoxFor(x => x.Direccion, new { @class = "form-control", id = "txtDireccion", required = "required" })
+                                        @*<input type="text" class="form-control" id="txtDireccion" name="txtDireccion" required />*@
+                                    </div>
+                                    <div class="grupo_campos">
+                                        <label class="labels-create">Leyenda</label>
+                                        @Html.TextBoxFor(x => x.Leyenda, new { @class = "form-control", id = "txtLeyenda", required = "required" })
+                                        @*<input type="text" class="form-control" id="txtLeyenda" name="txtLeyenda" required />*@
+
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <div class="grupo_campos">
+                                        <label class="labels-create">Telefono 1</label>
+                                        @Html.TextBoxFor(x => x.Telefono1, new { maxlength = 8, type = "tel", @class = "form-control", id = "txtTelefono1", required = "required" })
+                                        @*<input type="tel" class="form-control" id="txtTelefono1" name="txtTelefono1" required maxlength="8" />*@
+                                    </div>
+                                    <div class="grupo_campos">
+                                        <label class="labels-create">Telefono 2</label>
+                                        @Html.TextBoxFor(x => x.Telefono2, new { maxlength = 8, type = "tel", @class = "form-control", id = "txtTelefono2" })
+                                        @*<input type="tel" class="form-control" id="txtTelefono2" name="txtTelefono2" required maxlength="8" />*@
+                                        <p class="descripciones">(Opcional)</p>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4 row">
+                                    <div class="grupo_input">
+                                        <label class="">Logo</label>
+                                        <div class="input-group col-md-6 mt-3">
+                                            <input type="file" class="form-control-sm" id="foto" name="foto" accept="image/*" />
+                                            <button class="btn btn-secondary btn-sm" type="button" id="btnLimpiarLogo" onclick="LimpiarLogo()" disabled>
+                                                <span class="bi bi-x"></span>
+                                            </button>
+                                        </div>
+                                        @if (Model.Logo != null && Model.Logo.Length > 0)
+                                        {
+                                            <img class="img-thumbnail thumbnail-file" alt="Imagen De Empresa" id="imagen" name="Logo"
+                                                 src="data:image/png;base64,@Convert.ToBase64String(Model.Logo)" />
+                                        }
+
+
+                                        <p class="descripciones">El logo se visualizará al subirse</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <button class="btn btn-personalizados" id="btnEnviar" type="submit">Guardar</button>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</div>
+
+<style>
+    .descripciones {
+        font-size: 14px;
+        font-weight: 400;
+        padding: 5px 0px 0px 0px;
+    }
+
+    .labels-create {
+        font-size: 16px;
+        font-weight: 400;
+        padding: 0px 0px 5px 0px;
+    }
+
+    .grupo_campos {
+        padding: 0px 0px 20px 0px;
+    }
+
+    .grupo_input {
+        display: block;
+    }
+
+    .thumbnail-file {
+        width: 240px;
+        height: 240px;
+    }
+</style>
+<script src="~/Scripts/Empresa/CreateEmpresa.js"></script>

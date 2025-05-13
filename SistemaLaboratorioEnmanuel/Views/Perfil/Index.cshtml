@@ -1,0 +1,126 @@
+﻿@model List<SistemaLaboratorioEnmanuel.Models.Perfil>
+@{
+    ViewBag.Title = "Perfiles";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+@Html.Partial("Modales/ModalListarExamenesPorPerfil")
+<div class="row">
+    <div class="col-12">
+        <!-- Inicio Encabezado -->
+        <div class="card-plantilla">
+            <div class="card-header-plantilla">
+                <h1 class="card-titulo-plantilla">Perfiles</h1>
+            </div>
+        </div><!-- Fin encabezado -->
+        <!-- Inicio Barra Busqueda -->
+        <!--<div class="barra-busqueda col-sm-12">
+            <div class="input-group">
+                <input class="form-control" type="text" id="txtNombre" tabindex="1" placeholder="Buscar perfil" />
+                <button class="btn btn-primary btn-personalizados me-1 bi-search" id="btnBuscarInsumo" tabindex="2"> </button>
+                <button class="btn btn-primary btn-personalizados bi-eraser-fill" id="btnLimpiar" tabindex="3"> </button>
+            </div>
+        </div>--> <!-- Fin barra busqueda -->
+        <!-- Inicio head tabla -->
+        <div class="head-table col-sm-12">
+            <div class="input-group head-table" style="float: right">
+                @*<a class="btn btn-primary me-1" href="@Url.Action("GenerarExcel", "Perfil")" style="background: #1f7b2d">Excel <span class="bi bi-file-earmark-ruled-fill"></span></a>*@
+                <a href="@Url.Action("Create")" class="btn btn-sm btn-primary btn-personalizados float-end">
+                    Agregar
+                </a>
+
+            </div>
+        </div> <!-- Fin head tabla -->
+    </div>
+
+    <section class="section">
+        <div class="col-lg-12">
+            <div class="card p-4">
+                <div class="card-body">
+
+                    <div class="table-responsive-sm">
+                        <table id="datatable_perfiles" class="table table-hover table-bordered">
+                            <thead>
+                                <tr class="text-dark text">
+                                    <th scope="col">Perfil</th>
+                                    <th scope="col">Descripcion del Perfil</th>
+                                    <th scope="col">Area</th>
+                                    <th class="text-center" scope="col">Examenes</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.NombrePerfil</td>
+                                        <td>@item.Descripcion</td>
+                                        <td>@item.Area.NombreArea</td>
+                                        <td class="text-center">
+                                            <button onclick="ListarExamenesPorPerfil(@item.Id)" class="btn btn-sm btn-primary btn-personalizados " data-bs-toggle="modal" data-bs-target="#ListarExamPerfil" id="btnCargarExamenesPerfil"><i class="bi bi-eye-fill"></i></button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script type="text/javascript">
+    function ListarExamenesPorPerfil(id) {
+       let url = "@Url.Action("ListaExamenesPerfil", "Perfil")";
+       let mapeado = { PerfilId: id };
+
+        $.get(url, mapeado).done(function (data) {
+            $("#ContenedorTablaExamXPerfil").html(data)
+        });
+    }
+
+    let vdataTable;
+    let dataTableIsInitialized = false;
+
+    const dataTableOptions = {
+
+        lengthMenu: [10, 20, 30, 40, 50, 100, 200],
+        columnDefs: [
+            //{ className: "centered", targets: [0, 1, 2, 3, 4, 5, 6] },
+            //{ orderable: false, targets: [4] },
+            //{ searchable: false, targets: [1] }
+            //{ width: "50%", targets: [0] }
+        ],
+        destroy: true,
+        language: {
+            lengthMenu: "Mostrar _MENU_ registros por página",
+            zeroRecords: "Ningún usuario encontrado",
+            info: "Mostrando de _START_ a _END_ de un total de _TOTAL_ registros",
+            infoEmpty: "Ningún usuario encontrado",
+            infoFiltered: "(filtrados desde _MAX_ registros totales)",
+            search: "Buscar:",
+            loadingRecords: "Cargando...",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            }
+        }
+    };
+
+    const initDataTable = () => {
+        if (dataTableIsInitialized) {
+            vdataTable.destroy();
+        }
+
+        vdataTable = $("#datatable_perfiles").DataTable(dataTableOptions);
+
+        dataTableIsInitialized = true;
+    };
+
+    window.addEventListener("load", () => {
+        initDataTable();
+    });
+</script>

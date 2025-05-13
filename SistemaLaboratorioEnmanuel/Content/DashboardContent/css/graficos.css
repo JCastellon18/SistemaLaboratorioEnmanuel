@@ -1,0 +1,21 @@
+﻿.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    height: 400px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .chart-container {
+        height: 300px;
+    }
+}
+
+.card-title-dashboard {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    text-align: center;
+}

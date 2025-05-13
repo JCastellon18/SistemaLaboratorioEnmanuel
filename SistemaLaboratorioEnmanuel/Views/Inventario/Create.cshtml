@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "Nuevo Insumo";
+    ViewBag.TituloModalConetendor = "Proveedores";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+@Html.Partial("Modales/ModalListarProveedoresInsumo")
+
+<div class="row mb-3">
+    <div class="col-12">
+        <!-- Inicio Encabezado -->
+        <div class="card-plantilla">
+            <div class="card-header-plantilla">
+                <h1 class="card-titulo-plantilla">Nuevo Insumo</h1>
+            </div>
+        </div><!-- Fin encabezado -->
+
+    </div>
+</div>
+
+<section class="section">
+    <div class="col-lg-12">
+        <div class="card p-4">
+            <div class="card-body">
+                @using (Html.BeginForm("Create", "Inventario", FormMethod.Post, new { id = "eventsubmit" }))
+                {
+
+                    <div class="row mb-2 mt-2">
+                        <div class="form-group col-md-3 mt-3">
+                            <!--Columna Codigo Barra-->
+                            <div class="input-group mb-1">
+                                <input class="form-control" placeholder="1234567890" type="text" id="CodigoBarra" name="CodigoBarra" />
+                            </div>
+                            <label class="form-labels" for="CodigoBarra">Código de barra</label>
+
+                            <!--<!--Columna Unidad De Medida-->
+                            <div class="input-group mt-4 mb-1">
+                                <input class="form-control" hidden type="text" id="UnidadMedida" name="UnidadMedida" />
+                                <select class="form-select" id="UnidadMedidaSelect" name="UnidadMedidaSelect">
+                                    <option value="0" disabled selected>Seleccione Unidad</option>
+                                    <option value="1">ml</option>
+                                    <option value="2">mg</option>
+                                </select>
+                            </div>
+                            <label class="form-labels" for="UnidadMedida">Unidad de medida</label>
+                        </div>
+
+                        <div class="form-group col-md-4 mt-3">
+                            <!--Columna Nombre Producto-->
+                            <div class="input-group mb-1">
+                                <input class="form-control" type="text" id="Nombre" name="Nombre" />
+                            </div>
+
+                            <!--Columna Proveedor-->
+                            <label class="form-labels" for="Nombre">Nombre del Producto</label>
+                            <div class="input-group mt-4 mb-1">
+                                <button class="btn btn-secondary btn-sm" type="button" id="btnLimpiarProveedor" onclick="LimpiartxtProveedor()" disabled><span class="bi bi-x"></span></button>
+                                <input type="hidden" id="IdProveedor" name="IdProveedor" />
+                                <input class="form-control" type="text" id="txtNombreProveedor" name="IdProveedor" readonly />
+                                <button type="button" class="btn btn-primary btn-personalizados" onclick="ListarProveedores()" id="btnBuscarProveedor" data-bs-toggle="modal" data-bs-target="#ListarProveedoresInsumo"><span class="bi bi-plus-lg"></span></button>
+                            </div>
+                            <label class="form-labels" for="IdProveedor">Proveedor</label>
+                        </div>
+
+                        <div class="form-group col-md-5 mt-3">
+                            <!--Columna Descripcion-->
+                            <div class="input-group mb-1">
+                                <input class="form-control" type="text" id="Descripcion" name="Descripcion" />
+                            </div>
+                            <label class="form-labels" for="Descripcion">Descripcion</label>
+                            <div class="row">
+                                <!--Columna Presentacion-->
+                                <div class="col-sm-6">
+                                    <div class="input-group mt-4 mb-1">
+                                        <input class="form-control" type="text" id="Presentacion" name="Presentacion" />
+                                    </div>
+                                    <label class="form-labels" for="Presentacion">Presentación (Según el tipo de insumo)</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <!--Columna Cantidad En Unidad De Medida-->
+                                    <div class="input-group mt-4 mb-1">
+                                        <input class="form-control" type="text" id="Sobrante" name="Sobrante" />
+                                    </div>
+                                    <label class="form-labels" for="Sobrante">Cantidad en unidad de medida</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row m-auto align-items-center justify-content-end">
+                        <div class="col-3 mt-5 text-center">
+                            <button type="submit" id="btnguardar" class="btn btn-primary btn-personalizados">Guardar</button>
+                        </div>
+                    </div>
+
+                }
+
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .form-labels {
+        font-size: 15px;
+        font-weight: 400;
+    }
+
+    ::placeholder {
+        font-size: 16px;
+        font-weight: 400;
+    }
+</style>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#eventsubmit").submit(function (event) {
+            UnidadMedidas();
+            console.log("pi pi pi");
+        });
+    });
+
+    function UnidadMedidas() {
+        let valor = "";
+        valor = document.getElementById("UnidadMedidaSelect");
+        let texto = valor.options[valor.selectedIndex].text;
+        document.getElementById("UnidadMedida").value = texto;
+        console.log(texto);
+    }
+
+function ListarProveedores() {
+       let url = "@Url.Action("ListaProveedores", "Inventario")";
+
+        $.get(url).done(function (data) {
+            $("#ContenedorTablaProveedoresInsumo").html(data)
+        });
+    }
+
+    function AgregarProveedor(ProveedorId, NombreProveedor) {
+
+        document.getElementById("IdProveedor").value = ProveedorId;
+        document.getElementById("txtNombreProveedor").value = NombreProveedor;
+
+        $("#btnLimpiarProveedor").removeClass("btn-secondary");
+        $("#btnLimpiarProveedor").addClass("btn-danger");
+        $("#btnLimpiarProveedor").prop("disabled", false);
+        document.getElementById("btnCancelarProv").click();
+    }
+    function LimpiartxtProveedor() {
+        $("#btnLimpiarProveedor").prop("disabled", true);
+        $("#btnLimpiarProveedor").removeClass("btn-danger");
+        $("#btnLimpiarProveedor").addClass("btn-secondary");
+        document.getElementById("IdProveedor").value = "";
+        document.getElementById("txtNombreProveedor").value = "";
+    }
+</script>
+

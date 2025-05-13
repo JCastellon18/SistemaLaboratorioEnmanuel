@@ -1,0 +1,164 @@
+﻿@using Microsoft.AspNet.Identity
+@using SistemaLaboratorioEnmanuel.Models
+@{
+    string codigoUser = User.Identity.GetUserId();
+}
+<!DOCTYPE html>
+<html lang="es-mx">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="robots" content="noindex, nofollow">
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <title>Laboratorio Clinico Emanuel - @ViewBag.Title</title>
+    <link rel="icon" href="~/Content/DashboardContent/img/LogoCircle.png" />
+    <!--CSS DE PLANTILLA-->
+    <!-- <link href="assets/img/favicon.png" rel="icon">   -->
+    <!-- <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon"> -->
+    <link href="~/Scripts/limonte-sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="~/Content/DashboardContent/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/DashboardContent/css/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/Content/DashboardContent/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/Content/DashboardContent/css/quill.snow.css" rel="stylesheet">
+    <link href="~/Content/DashboardContent/css/quill.bubble.css" rel="stylesheet">
+    <link href="~/Content/DashboardContent/css/remixicon.css" rel="stylesheet">
+    <link href="~/Content/DashboardContent/css/simple-datatables.css" rel="stylesheet">
+    <link href="~/Content/DashboardContent/css/style.css" rel="stylesheet">
+    <link href="~/Content/DashboardContent/css/graficos" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="~/Scripts/limonte-sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+</head>
+<body>
+    <header id="header" class="header fixed-top d-flex align-items-center">
+        <div class="d-flex align-items-center justify-content-between"> <a href="@Url.Action("Index", "Dashboard")" class="logo d-flex align-items-center"> <img src="~/Content/DashboardContent/img/LogoCircle.png" alt=""> <span style="font-size: 20px" class="d-none d-lg-block">Laboratorio Clinico <br />Emanuel</span> </a> <i class="bi bi-list toggle-sidebar-btn"></i></div>
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+                <li class="nav-item dropdown pe-3">
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown"> <img src="~/Content/DashboardContent/img/LogoCircle.png" alt="Profile" class="rounded-circle"> <span class="d-none d-md-block dropdown-toggle ps-2"> </span> </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li class="dropdown-header">
+                            <h6>@User.Identity.GetUserName()</h6>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <span>Administrador</span>
+                            }
+                            else
+                            {
+                                <span>Trabajador</span>
+                            }
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        @*<li> <a class="dropdown-item d-flex align-items-center" href="#"> <i class="bi bi-person"></i> <span>Perfil</span> </a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>*@
+                        <li> <a class="dropdown-item d-flex align-items-center" href="#"> <i class="bi bi-gear"></i> <span>Configuración </span> </a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <li> <a class="dropdown-item d-flex align-items-center" href="javascript:document.getElementById('logoutForm').submit()"> <i class="bi bi-box-arrow-in-right"></i> <span>Cerrar  Sesión </span> </a></li>
+                        }
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+            <li class="nav-item"> <a class="nav-link " href="@Url.Action("Index","Dashboard")"> <i class="bi bi-grid"></i> <span>Dashboard</span> </a></li>
+            <li class="nav-item">
+                <!--Pestaña desplegable de registro y listado de areas y examenes-->
+                <a class="nav-link collapsed" data-bs-target="#examenes-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-clipboard-plus"></i><span>Exámenes</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+                <ul id="examenes-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li> <a href="@Url.Action("Index", "Area")"> <i class="bi bi-circle"></i><span>Áreas</span> </a></li>
+                    <li> <a href="@Url.Action("Index", "Examen")"> <i class="bi bi-circle"></i><span>Examenes</span> </a></li>
+                    <li> <a href="@Url.Action("Index", "Perfil")"> <i class="bi bi-circle"></i><span>Perfiles</span> </a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <!--Pestaña desplegable de registro y lista de pacientes-->
+                <a class="nav-link collapsed" data-bs-target="#clientes-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-person-circle"></i><span>Clientes</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+                <ul id="clientes-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li> <a href="@Url.Action("Index", "Paciente")"> <i class="bi bi-circle"></i><span>Pacientes</span> </a></li>
+                    <li> <a href="@Url.Action("Index", "Doctor")"> <i class="bi bi-circle active"></i><span>Doctores</span> </a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#facturacion-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-cash-coin"></i><span>Facturación</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+                <ul id="facturacion-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <!--Pestaña desplegable de seccion de facturacion y registro de ordenes-->
+                    <li> <a href="@Url.Action("Index","Facturacion")"> <i class="bi bi-circle"></i><span>Facturas</span> </a></li>
+                    <li> <a href="@Url.Action("Index","Orden")"> <i class="bi bi-circle"></i><span>Ordenes</span> </a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#Inventario-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-journal-text"></i><span>Inventario</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+                <ul id="Inventario-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <!--Pestaña desplegable de seccion de Inventario-->
+                    <li> <a href="@Url.Action("Index","Inventario")"> <i class="bi bi-circle"></i><span>Insumos</span> </a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#interno-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-person-workspace"></i><span>Interno</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+                <ul id="interno-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <!--Pestaña desplegable de seccion de interno-->
+                    @*<li> <a href="@Url.Action("Index", "Empleado")"> <i class="bi bi-circle"></i><span>Empleados</span> </a></li>*@
+                    <li> <a href="@Url.Action("Index", "Proveedor")"> <i class="bi bi-circle"></i><span>Proveedores</span> </a></li>
+                </ul>
+            </li>
+            <!--Accesos directos-->
+            <li class="nav-heading">Acciones</li>
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="nav-item"> <a class="nav-link collapsed" href="@Url.Action("Index", "Empresa")"> <i class="bi bi-building"></i> <span>Registro de Empresa</span> </a></li>
+            }
+            <li class="nav-item"> <a class="nav-link collapsed" href="@Url.Action("ResetPassword","Account", new { code = codigoUser})"> <i class="bi bi-lock-fill"></i> <span>Restablecer Contraseña</span> </a></li>
+            <li class="nav-item"> <a class="nav-link collapsed" href="javascript:document.getElementById('logoutForm').submit()"> <i class="bi bi-person"></i> <span>Cerrar Sesión</span> </a></li>
+            @*<li class="nav-item"> <a class="nav-link collapsed" href="#"> <i class="bi bi-gear-fill"></i> <span>Configuración</span> </a></li>*@
+            @*<li class="nav-item"> <a class="nav-link collapsed" href="@Url.Action("Index", "Reportes")"> <i class="bi bi-file-earmark"></i> <span>Reportes</span> </a></li>*@
+
+        </ul>
+    </aside>
+    <!--Inicio de seccion de contenido de la pagina-->
+    <main id="main" class="main">
+        @RenderBody()
+    </main>
+    <!--Fin de seccion de contenido de la pagina-->
+    <!--Footer del dashboard-->
+    <footer id="footer" class="footer">
+        <div class="copyright"> &copy; Copyright 2023 &nbsp;<strong><span>Laboratorio Clinico Emanuel.</span></strong> Todos los derechos reservados</div>
+    </footer>
+    <!--Inicio de seccion de js de la platilla-->
+    <script src="~/Scripts/limonte-sweetalert2/sweetalert2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <script src="~/Content/DashboardContent/js/apexcharts.min.js"></script>
+    <script src="~/Content/DashboardContent/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/DashboardContent/js/chart.min.js"></script>
+    <script src="~/Content/DashboardContent/js/echarts.min.js"></script>
+    <script src="~/Content/DashboardContent/js/quill.min.js"></script>
+    <script src="~/Content/DashboardContent/js/simple-datatables.js"></script>
+    <script src="~/Content/DashboardContent/js/tinymce.min.js"></script>
+    <script src="~/Content/DashboardContent/js/validate.js"></script>
+    <script src="~/Content/DashboardContent/js/main.js"></script>
+    <!--Fin de seccion de js de la platilla-->
+
+</body>
+</html>

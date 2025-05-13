@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="06d14422908d40259629019aaa0ace4f" Name="Diagram1" ZoomLevel="85">
+        <EntityTypeShape EntityType="LaboratorioBDModel.Abono" Width="1.5" PointX="5.25" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.Area" Width="1.5" PointX="3.75" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.Doctor" Width="1.5" PointX="3.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.Empleado" Width="1.5" PointX="9" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.Examen" Width="1.5" PointX="6.5" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.Orden" Width="1.5" PointX="6" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.Paciente" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.Proveedor" Width="1.5" PointX="11.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.Resultado" Width="1.5" PointX="13.5" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.Salida" Width="1.5" PointX="15.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.Telefono" Width="1.5" PointX="11.25" PointY="8.75" IsExpanded="true" />
+        <AssociationConnector Association="LaboratorioBDModel.RefArea7" ManuallyRouted="false" />
+        <AssociationConnector Association="LaboratorioBDModel.RefDoctor9" ManuallyRouted="false" />
+        <AssociationConnector Association="LaboratorioBDModel.RefEmpleado32" ManuallyRouted="false" />
+        <AssociationConnector Association="LaboratorioBDModel.RefPaciente10" ManuallyRouted="false" />
+        <AssociationConnector Association="LaboratorioBDModel.RefResultado26" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.DetalleEntrada" Width="1.5" PointX="15.75" PointY="1" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.Insumos" Width="1.5" PointX="13.5" PointY="9.125" />
+        <AssociationConnector Association="LaboratorioBDModel.fk_IdInsumo" />
+        <AssociationConnector Association="LaboratorioBDModel.fk_insumos_proveedor" />
+        <AssociationConnector Association="LaboratorioBDModel.RefInsumos25" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.Perfil" Width="1.5" PointX="6" PointY="16.75" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.PerfilExamen" Width="1.5" PointX="8.75" PointY="14.875" />
+        <AssociationConnector Association="LaboratorioBDModel.fk_Perfil_Area" />
+        <AssociationConnector Association="LaboratorioBDModel.fk_PerfilExamen_Examen" />
+        <AssociationConnector Association="LaboratorioBDModel.fk_PerfilExamen_Perfil" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.DetalleFactura" Width="1.5" PointX="11" PointY="11.625" />
+        <AssociationConnector Association="LaboratorioBDModel.PK_DetFactura_PerfilExam" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.DetalleOrden" Width="1.5" PointX="11.25" PointY="4.625" />
+        <AssociationConnector Association="LaboratorioBDModel.fk_PerfilExamDetalleOrden" />
+        <AssociationConnector Association="LaboratorioBDModel.RefDetalleOrden30" />
+        <AssociationConnector Association="LaboratorioBDModel.RefEmpleado37" />
+        <AssociationConnector Association="LaboratorioBDModel.RefOrden27" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.Factura" Width="1.5" PointX="8.25" PointY="4.25" />
+        <AssociationConnector Association="LaboratorioBDModel.RefFactura31" />
+        <AssociationConnector Association="LaboratorioBDModel.RefFactura17" />
+        <AssociationConnector Association="LaboratorioBDModel.RefOrden22" />
+        <AssociationConnector Association="LaboratorioBDModel.RefPaciente19" />
+        <EntityTypeShape EntityType="LaboratorioBDModel.Empresa" Width="1.5" PointX="0.75" PointY="8.75" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

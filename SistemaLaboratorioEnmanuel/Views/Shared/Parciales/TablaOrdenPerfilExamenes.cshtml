@@ -1,0 +1,12 @@
+﻿@model List<SistemaLaboratorioEnmanuel.Models.PerfilExamen>
+
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td width="70%">@item.Examen.NombreTipoExamen</td>
+        <td width="20%">@item.Examen.Precio</td>
+        <td width="10%" class="text-center"><button onclick="CargarExamenOrden( @item.Id,@String.Concat("'",@item.Examen.NombreTipoExamen,"'"),@item.Examen.Precio, @item.PerfilId,@String.Concat("'",@item.Perfil.NombrePerfil,"'"))" class="btn btn-primary btn-sm btn-personalizados"><i class="bi bi-plus-circle-fill"></i></button></td>
+
+    </tr>
+}

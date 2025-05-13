@@ -1,0 +1,134 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    int numOrdenes = ViewBag.numeroOrdenesVB, numPacientes = ViewBag.numeroPacientesVB;
+    decimal sumFactura = ViewBag.sumFacturaVB;
+    string mesActual = ViewBag.mesActualVB;
+    int ordenes_p = ViewBag.ordenes_pendientes;
+}
+
+<section class="section dashboard">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-xxl-4 col-md-6">
+                        <div class="card info-card sales-card">
+                            <div class="card-body">
+                                <h5 class="card-title-dashboard">Total Facturado <span>| @mesActual</span></h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center"> <i class="bi bi-coin"></i></div>
+                                    <div class="ps-3">
+                                        <h6><span>$</span>@sumFactura</h6> <!--Donde irá el resultado de la consulta-->
+                                    </div>
+
+                                </div>
+                                <div class="card-footer position-relative mt-3">
+                                    <div class="d-flex align-items-center justify-content-between small text-body">
+                                        <a class="stretched-link text-body mt-3" style="font-size: 14px; font-weight: 500; color: #bcd339; font-family: Poppins, sans-serif;" href="@Url.Action("Index","Facturacion")">Todas Las Facturas</a>
+                                        <i style="color: #2aa1dd; font-size:18px" class="bi bi-caret-right-fill"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-4 col-md-6 card-dashboard">
+                        <div class="card info-card revenue-card">
+                            <div class="card-body">
+                                <h5 class="card-title-dashboard">Ordenes Pendientes <span>| @mesActual</span></h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center"> <i class="bi bi-card-checklist"></i></div>
+                                    <div class="ps-3">
+                                        <h6>@ordenes_p</h6> <!--Donde irá el resultado de la consulta-->
+                                    </div>
+                                </div>
+                                <div class="card-footer position-relative mt-3">
+                                    <div class="d-flex align-items-center justify-content-between small text-body">
+                                        <a class="stretched-link text-body mt-3" style="font-size: 14px; font-weight: 500; color: #bcd339; font-family: Poppins, sans-serif;" href="@Url.Action("Index","Orden")">Ver Ordenes Pendiente</a>
+                                        <i style="color: #2aa1dd; font-size:18px" class="bi bi-caret-right-fill"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-4 col-md-6 card-dashboard">
+                        <div class="card info-card sales-card">
+                            <div class="card-body">
+                                <h5 class="card-title-dashboard">Total de Ordenes <span>| @mesActual</span></h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center"> <i class="bi bi-check-circle"></i></div>
+                                    <div class="ps-3">
+                                        <h6>@numOrdenes</h6> <!--Donde irá el resultado de la consulta-->
+                                    </div>
+                                </div>
+                                <div class="card-footer position-relative mt-3 pb-4">
+                                    <div class="d-flex align-items-center justify-content-between small text-body pb-4">
+                                        @*<a class="stretched-link text-body" style="font-size: 14px; font-weight: 500; color: #bcd339; font-family: Poppins, sans-serif;" href="@Url.Action("Index","Orden")">Todas Las Ordenes</a>*@
+                                        @* <i style="color: #2aa1dd; font-size:18px" class="bi bi-caret-right-fill"></i>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <section class="section">
+                        <div class="col-12">
+                            <div class="card p-4">
+                                <div class="card-body">
+                                    <h5 class="card-title-dashboard text-center">Exámenes Más Vendidos</h5>
+
+                                    <!-- Contenedor con tamaño fijo para el canvas -->
+                                    <div class="chart-container" style="position: relative; height: 400px; width: 100%;">
+                                        <canvas id="examenesMasVendidosChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="row mt-5">
+                    <section class="section">
+                        <div class="col-12">
+                            <div class="card p-4">
+                                <div class="card-body">
+                                    <h5 class="card-title-dashboard text-center">Estado de las Órdenes</h5>
+
+                                    <div class="chart-container" style="position: relative; height: 400px; width: 100%;">
+                                        <canvas id="ordenesPorEstadoChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="row mt-5">
+                    <section class="section">
+                        <div class="col-12">
+                            <div class="card p-4">
+                                <div class="card-body">
+                                    <h5 class="card-title-dashboard text-center">Ingresos de los Últimos 6 Meses</h5>
+                                    <div class="chart-container" style="position: relative; height: 400px; width: 100%;">
+                                        <canvas id="ingresosChart6m"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="~/Scripts/Dashboard/Dashboard.js"></script>

@@ -1,0 +1,144 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+<div class="row p-2">
+    <!--Encabezado y barra de busqueda-->
+    <div class="col-12">
+        <div class="card-plantilla">
+            <div class="card-header-plantilla">
+                <h1 class="card-titulo-plantilla">DOCTORES</h1>
+            </div>
+        </div>
+        <!--<div class="barra-busqueda col-sm-12">
+            <div class="input-group">-->
+                @*<label class="form-label me-1">Busqueda por nombres: </label>*@
+                <!--<input class="form-control" type="text" id="txtNombre" tabindex="1" placeholder="Buscar Por Nombre Doctor" />
+                <button class="btn btn-primary btn-personalizados me-1 bi-search" id="btnBuscarDoctor" tabindex="2"> </button>
+                <button class="btn btn-primary btn-personalizados bi-eraser-fill" id="btnLimpiar" tabindex="3"> </button>
+            </div>
+        </div>-->
+        <div class="head-table col-sm-12">
+            <div class="input-group head-table" style="float: right">
+                @*<a class="btn btn-primary me-1" href="@Url.Action("GenerarExcel", "Doctor")" style="background: #1f7b2d">Excel <span class="bi bi-file-earmark-ruled-fill"></span></a>*@
+                @*<a class="btn btn-primary" href="@Url.Action("GenerarExcel", "Doctor")" style="background: #d63031 ">PDF <span class="bi bi-file-earmark-pdf-fill"></span></a>*@
+                <!-- Boton de ventana modal -->
+                <button type="button" onclick="abrirModal(0)" class="btn btn-primary btn-personalizados float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Agregar
+                </button>
+            </div>
+        </div> <!--Fin de Encabezado de pagina-->
+        <!-- Modal para boton agregar -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Nuevo Doctor</h1>
+                    </div>
+                    <div class="modal-body">
+                        <table style="width:80%; margin:auto">
+                            <tr>
+                                <td width="40%" hidden>Id Doctor</td>
+                                <td width="60%" hidden><input class="limpiar" type="text" id="txtIdDoctor" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td width="40%">Nombres</td>
+                                <td width="60%"><input class="limpiar obligatorio form-control" type="text" id="txtNombresDoctor" /></td>
+                            </tr>
+                            <tr>
+                                <td width="40%">Apellidos</td>
+                                <td width="60%"><input class="limpiar obligatorio form-control" type="text" id="txtApellidosDoctor" /></td>
+                            </tr>
+                            <tr>
+                                <td width="40%">Descripción</td>
+                                <td width="60%"><input class="limpiar obligatorio form-control" type="text" id="txtDescripcionDoctor" /></td>
+                            </tr>
+                            <tr>
+                                <td width="40%">Telefono</td>
+                                <td width="60%"><input class="limpiar obligatorio form-control" type="number" id="txtTelefonoDoctor" /></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnCancelarAgregar" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <button onclick="Agregar()" type="button" class="btn btn-success">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal para el boton editar -->
+        <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Área</h1>
+                    </div>
+                    <div class="modal-body">
+                        <table style="width:80%; margin:auto">
+                            <tr>
+                                <td width="40%" hidden>Id Doctor</td>
+                                <td width="60%" hidden><input class="limpiar" type="text" id="txtIdDoctorEditar" readonly /></td>
+                            </tr>
+                            <tr>
+                                <td width="40%">Nombres</td>
+                                <td width="60%"><input class="limpiar obligatorioE form-control" type="text" id="txtNombresDoctorEditar" /></td>
+                            </tr>
+                            <tr>
+                                <td width="40%">Apellidos</td>
+                                <td width="60%"><input class="limpiar obligatorioE form-control" type="text" id="txtApellidosDoctorEditar" /></td>
+                            </tr>
+                            <tr>
+                                <td width="40%">Descripción</td>
+                                <td width="60%"><input class="limpiar obligatorioE form-control" type="text" id="txtDescripcionDoctorEditar" /></td>
+                            </tr>
+                            <tr>
+                                <td width="40%">Telefono</td>
+                                <td width="60%"><input class="limpiar obligatorioE form-control" type="number" id="txtTelefonoDoctorEditar" /></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnCancelarEditar" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <button onclick="Editar()" type="button" class="btn btn-success">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="col-lg-12">
+            <div class="card p-2">
+                <div class="card-body pt-3">
+                    <div class="table-responsive-sm" id="divTablas">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Nombres y Apellidos</th>
+                                    <th>Descripción</th>
+                                    <th>Telefono</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@*Archivos JS*@
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/Doctores/Doctores.js"></script>
+<script src="~/Scripts/limonte-sweetalert2/sweetalert2.min.js"></script>
+<script src="~/Scripts/toastr.min.js"></script>
+<script src="~/Content/DashboardContent/js/datatables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>

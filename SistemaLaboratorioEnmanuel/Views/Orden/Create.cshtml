@@ -1,0 +1,284 @@
+﻿@model SistemaLaboratorioEnmanuel.Models.ViewModels.OrdenViewModel
+@{
+    List<SistemaLaboratorioEnmanuel.Models.SP_ListaDoctores_Result> ListDoc = ViewBag.ListarDoctoresVB;
+    List<SistemaLaboratorioEnmanuel.Models.SP_ListaPacientes_Result> ListPac = ViewBag.ListarPacientesVB;
+    ViewBag.Title = "Registrar Orden";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    List<SelectListItem> examenes = (List<SelectListItem>)ViewBag.listExamen;
+    int i = 0, p = 0;
+    SistemaLaboratorioEnmanuel.Util.ListUtil.listaExamenesOrden.Clear();
+    SistemaLaboratorioEnmanuel.Util.ListUtil.MontoDescuento = 0;
+}
+@Html.Partial("Modales/ModalContenedor")
+
+
+<div class="row">
+    <div class="col-12 mb-4">
+        <!-- Inicio Encabezado -->
+        <div class="card-plantilla">
+            <div class="card-header-plantilla">
+                <h1 class="card-titulo-plantilla">Crear Nueva Orden</h1>
+            </div>
+        </div><!-- Fin encabezado -->
+    </div>
+
+    <section class="section">
+        <div class="col-12">
+            <div class="card p-4">
+                <div class="card-body">
+
+                    <div class="row mb-2 mt-3">
+                        <div class="form-group col-md-4 mt-3">
+                            <label class="mb-2">Tipo de Orden</label>
+
+                            @Html.DropDownList("Category", new List<SelectListItem>()
+                                {
+                                    new SelectListItem(){ Text= "Propia", Value = "1"},
+                                    new SelectListItem(){ Text= "Medica", Value = "2"}
+                                }, "Seleccionar Tipo", new { id = "txtTipoOrden", @class = "form-control", required = "required" })
+                        </div>
+                        <div class="form-group col-md-4 mt-3">
+                            <label class="mb-2">Descripción</label>
+                            @Html.TextBoxFor(x => x.Descripcion, new { @class = "form-control", id = "txtDescripcion", required = "required" })
+                        </div>
+
+                        <div class="form-group col-md-4 mt-3">
+                            <label class="mb-2">Doctor</label>
+                            <div class="input-group mb-3">
+                                <button class="btn btn-secondary btn-sm" type="button" id="btnlimpiartxtDoctor" onclick="LimpiartxtDoctores()" disabled><span class="bi bi-x"></span></button>
+
+                                @Html.TextBox("txtDoctores", "", new { @class = "form-control", id = "txtDoctores", disabled = "true", required = "required" })
+                                <button class="btn btn-primary" type="button" id="btnBuscarDoctor" data-bs-toggle="modal" data-bs-target="#BuscDoctorModal"><span class="bi bi-search"></span></button>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label class="mb-2 mt-2">Paciente</label>
+                            <div class="input-group mb-3">
+                                <button class="btn btn-secondary btn-sm" type="button" id="btnlimpiartxtPaciente" onclick="LimpiartxtPaciente()" disabled><span class="bi bi-x"></span></button>
+
+                                @Html.TextBox("txtPaciente", "", new { @class = "form-control", id = "txtPaciente", disabled = "true", required = "required" })
+                                <button class="btn btn-primary" type="button" id="btnBuscarPaciente" data-bs-toggle="modal" data-bs-target="#BuscPacienteModal"><span class="bi bi-search"></span></button>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group col-md-4">
+                            <label class="mb-2 mt-2">Areas</label>
+                            <div class="input-group mb-3">
+                                <button class="btn btn-secondary btn-sm" type="button" id="btnLimpiarArea" onclick="LimpiartxtArea()" disabled><span class="bi bi-x"></span></button>
+                                @Html.TextBox("IdAreaHidden", "", new { @class = "form-control", id = "IdAreaHidden", style = "display: none;" })
+                                @Html.TextBox("NombreArea", "", new { @class = "form-control", id = "NombreArea", disabled = "true", required = "required" })
+                                <button class="btn btn-primary" type="button" id="btnBuscarArea" onclick="ListarAreas()" data-bs-toggle="modal" data-bs-target="#ContenedorGeneralId"><span class="bi bi-search"></span></button>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label class="mb-2 mt-2">Perfiles</label>
+                            <div class="input-group mb-3">
+                                <button class="btn btn-secondary btn-sm" type="button" id="btnLimpiarPerfil" onclick="LimpiartxtPerfil()" disabled><span class="bi bi-x"></span></button>
+                                @Html.TextBox("IdPerfilHidden", "", new { @class = "form-control", id = "IdPerfilHidden", style = "display: none;" })
+                                @Html.TextBox("NombrePerfil", "", new { @class = "form-control", id = "NombrePerfil", disabled = "true", required = "required" })
+                                <button class="btn btn-primary" type="button" id="btnBuscarPerfil" onclick="ListarPerfiles()" data-bs-toggle="modal" data-bs-target="#ContenedorGeneralId  "><span class="bi bi-search"></span></button>
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group col-md-4">
+                            <label class="mb-2 mt-2">Descuento</label>
+                            <div class="input-group mb-3">
+                                <button class="btn btn-secondary btn-sm" type="button" id="btnLimpiarDescuento" onclick="LimpiartxtPerfil()" disabled><span class="bi bi-x"></span></button>
+                                @Html.TextBox("MontoDescuento", "C$ 0", new { @class = "form-control text-end", id = "descuentoId", disabled = "true", required = "required" })
+                                <button class="btn btn-primary" type="button" id="btnAddDescuento" onclick="CargarDescuento()" data-bs-toggle="modal" data-bs-target="#ContenedorGeneralId" disabled><span class="bi bi-plus-lg"></span></button>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="row">
+
+                                <div class=" col-md-6 form-group offset-md-6">
+                                    <label class="mb-2 mt-2">SubTotal</label>
+                                    <div class="input-group mb-3">
+                                        @Html.TextBox("SubTotal", "C$ 0", new { @class = "form-control text-end", id = "SubTotal", disabled = "true", required = "required" })
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label class="mb-2 mt-2">Total</label>
+                                    <div class="input-group mb-3">
+                                        @Html.TextBox("PrecioTotal", "C$ 0", new { @class = "form-control text-end", id = "PrecioTotal", disabled = "true", required = "required" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 text-end">
+                                    <label class="mb-2 mt-2 d-block">&nbsp;</label> <!-- Espacio para alinear los botones con el input de arriba -->
+                                    <div class="d-flex flex-row-reverse gap-2">
+                                        <input class="btn btn-primary" type="button" id="FinalizarOrden" onclick="ActivaDesactivaItems()" value="Finalizar" />
+                                        @using (Html.BeginForm("Add", "Orden", FormMethod.Post))
+                                        {
+
+                                            @Html.TextBoxFor(x => x.TipoOrden, new { @class = "form-control", id = "txtTipoOrdenHidden", style = "display: none;" })
+                                            @Html.TextBoxFor(x => x.Descripcion, new { @class = "form-control", id = "txtDescripcionHidden", style = "display: none;" })
+                                            @Html.TextBoxFor(x => x.IdDoctor, new { @class = "form-control", id = "txtDoctoresHidden", style = "display: none;" })
+                                            @Html.TextBoxFor(x => x.IdPaciente, new { @class = "form-select", id = "txtPacienteHidden", style = "display: none;" })
+                                            @Html.TextBox("PrecioTotal", "", new { @class = "form-control", id = "IdPrecioTotalHidden", style = "display: none;" })
+                                            @Html.TextBox("PrecioSubTotal", "", new { @class = "form-control", id = "PrecioSubTotalHidden", style = "display: none;" })
+                                            @Html.TextBox("MontoDescuento", "", new { @class = "form-control", id = "MontoDescuentoHidden", style = "display: none;" })
+                                            <input class="btn btn-success d-none" type="submit" id="GuardarOrden" value="Guardar" />
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row justify-content-between mt-5">
+                        <hr />
+                        <!-- Tabla origen -->
+                        <div class="px-lg-3 col-lg-5 col-sm-12">
+                            <span>Examenes del Perfil</span>
+                            <hr />
+                            <div class="my-3 px-lg-5">
+                                <div class="table-responsive-sm">
+                                    <table class="table" style="width: 100%; margin: auto">
+                                        <thead>
+                                            <tr class="text-dark text">
+                                                <th class="" scope="col" width="70%">Examen</th>
+                                                <th class="" scope="col" width="20%">Precio unit.</th>
+                                                <th class="text-center" scope="col" width="10%">Agregar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="TablaListaExamenesPerfil">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Tabla destino -->
+                        <div class="px-lg-3 col-lg-5 col-sm-12">
+                            <span>Examenes de la Orden</span>
+                            <hr />
+                            <div class="my-3 px-lg-5">
+
+                                <div class="table-responsive-sm">
+                                    <table class="table" style="width: 100%; margin: auto">
+                                        <thead>
+                                            <tr class="text-dark text">
+                                                <th class="" scope="col" width="30%">Perfil</th>
+                                                <th class="" scope="col" width="40%">Examen</th>
+                                                <th class="" scope="col" width="20%">Precio</th>
+                                                <th class="text-center" scope="col" width="10%">Agregar</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody id="TablaListaExamenesOrden">
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Modal Doctores-->
+<div class="modal fade" id="BuscDoctorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tituloBuscarDoctor">Buscar Doctor</h5>
+                <button type="button" class="btn-close btn-outline-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body container-fluid">
+                <br />
+                <table class="table table-hover table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombres y Apellidos</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_Busc_Doctor">
+
+                        @foreach (var item in ListDoc)
+                        {
+                            i = i + 1;
+                            <tr class="">
+                                <td class="text-center">@i</td>
+                                <td>@item.NombreCompleto</td>
+                                <td class="text-center"><button class="btn btn-sm bg-warning btn-personalizados" onclick="añadirTxtDoctor(@item.Id)"><span class="bi bi-person-plus-fill"></span></button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCancelarDoctor" class="btn btn-danger" data-bs-dismiss="modal"><span class="bi bi-x-circle"> Cancelar</span></button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Modal Pacientes-->
+<div class="modal fade" id="BuscPacienteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tituloBuscarDoctor">Pacientes</h5>
+                <button type="button" class="btn-close btn-outline-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body container-fluid">
+                <br />
+                <table class="table table-hover table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombres y Apellidos</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_Busc_Pac">
+
+                        @foreach (var item in ListPac)
+                        {
+                            p = p + 1;
+                            <tr class="">
+                                <td class="text-center">@p</td>
+                                <td>@item.NombreCompleto</td>
+                                <td class="text-center"><button class="btn btn-sm bg-warning btn-personalizados" onclick="añadirTxtPaciente(@item.Id)"><span class="bi bi-person-plus-fill"></span></button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCancelarPaciente" class="btn btn-danger" data-bs-dismiss="modal"><span class="bi bi-x-circle"> Cancelar</span></button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="~/Scripts/Ordenes/Ordenes.js"></script>
+

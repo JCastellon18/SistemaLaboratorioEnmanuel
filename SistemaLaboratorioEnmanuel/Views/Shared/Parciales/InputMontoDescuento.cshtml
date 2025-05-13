@@ -1,0 +1,13 @@
+﻿@model decimal
+
+<div class="row mb-3">
+    <label for="MontoDescu" class="col-sm-5 col-form-label">Monto a descontar: </label>
+    <div class="col-sm-7">
+        <input name="MontoDescu" id="MontoDescu" type="number" class="form-control" min="0" value="@Model"> <!--Aqui esta el monto-->
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-12 text-end">
+        <button type="button" class="btn btn-primary btn-sm btn-personalizados" onclick="ActualizarDescuento()" data-bs-dismiss="modal">Aplicar</button>
+    </div>
+</div>

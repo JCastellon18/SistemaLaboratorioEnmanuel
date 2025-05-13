@@ -1,0 +1,38 @@
+﻿@model SistemaLaboratorioEnmanuel.Models.Resultado
+
+<div class="container">
+    <form id="formEditarResultado" method="post" action="@Url.Action("ActualizarResultado", "Resultado")">
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <input type="hidden" name="IdDetalleOrden" value="@Model.IdDetalleOrden" />
+
+        <div class="form-group mb-3">
+            <label for="NombreExamen" class="form-label">Nombre del Examen</label>
+            <input type="text" class="form-control" id="NombreExamen" name="NombreExamen" value="@Model.NombExamen" readonly />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="Resultado" class="form-label">Resultado</label>
+            <input type="text" class="form-control" id="Resultado1" name="Resultado1" value="@Model.Resultado1" required />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="ValoresNormales" class="form-label">Valores Normales</label>
+            <input type="text" class="form-control" id="ValoresNormales" name="ValoresNormales" value="@Model.ValoresNormales" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="Unidad" class="form-label">Unidad</label>
+            <input type="text" class="form-control" id="Unidad" name="Unidad" value="@Model.Unidad" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="ValorReferencia" class="form-label">Valor de Referencia</label>
+            <input type="text" class="form-control" id="ValorReferencia" name="ValorReferencia" value="@Model.ValorReferencia" />
+        </div>
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary"><span class="bi bi-save"> Guardar Cambios</span></button>
+        </div>
+    </form>
+</div>
+

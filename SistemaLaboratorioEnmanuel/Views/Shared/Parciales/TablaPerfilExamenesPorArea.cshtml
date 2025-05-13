@@ -1,0 +1,20 @@
+﻿@model List<SistemaLaboratorioEnmanuel.Models.Examen>
+
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td width="70%">@item.NombreTipoExamen</td>
+        <td width="30%" class="text-center"><button onclick="CargarExamenPerfil( @item.Id,@String.Concat("'",@item.NombreTipoExamen,"'"))" class="btn btn-primary btn-sm btn-personalizados"><i class="bi bi-plus-circle-fill"></i></button></td>
+    </tr>
+}
+
+
+
+
+
+
+
+
+
+

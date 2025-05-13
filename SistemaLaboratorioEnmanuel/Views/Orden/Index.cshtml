@@ -1,0 +1,107 @@
+﻿@model List<SistemaLaboratorioEnmanuel.Models.SP_ProcDatosOrden_Result>
+@{
+    ViewBag.Title = "Ordenes";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+@Html.Partial("Modales/ModalOrdenes")
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show custom-alert">
+        @TempData["Success"]
+</div>}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show custom-alert">
+        @TempData["Error"]
+</div>}
+
+<div class="row">
+    <div class="col-12">
+        <!-- Inicio Encabezado -->
+        <div class="card-plantilla">
+            <div class="card-header-plantilla">
+                <h1 class="card-titulo-plantilla">Ordenes</h1>
+            </div>
+        </div><!-- Fin encabezado -->
+        <!-- Inicio Barra Busqueda -->
+        <!--<div class="barra-busqueda col-sm-12">
+            <div class="input-group">
+                <input class="form-control" type="text" id="txtNombre" tabindex="1" placeholder="Buscar Ordenes" />
+                <button class="btn btn-primary btn-personalizados me-1 bi-search" id="btnBuscarOrdenes" tabindex="2"> </button>
+                <button class="btn btn-primary btn-personalizados bi-eraser-fill" id="btnLimpiar" tabindex="3"> </button>
+            </div>
+        </div>--> <!-- Fin barra busqueda -->
+        <!-- Inicio head tabla -->
+        <div class="head-table col-sm-12">
+            <div class="input-group head-table" style="float: right">
+                @*<a class="btn btn-primary me-1" href="@Url.Action("GenerarExcel", "Facturas")" style="background: #1f7b2d">Excel <span class="bi bi-file-earmark-ruled-fill"></span></a>*@
+                @*<a class="btn btn-primary" href="@Url.Action("GenerarExcel", "Facturas")" style="background: #d63031 ">PDF <span class="bi bi-file-earmark-pdf-fill"></span></a>*@
+                <a href="@Url.Action("Create", "Orden")"><button class="btn btn-primary btn-personalizados float-end">Nueva Orden</button></a>
+            </div>
+        </div> <!-- Fin head tabla -->
+    </div>
+
+    <!-------------------------------------Nueva Implementacion------------------------------------>
+    <section class="section">
+        <div class="col-lg-12">
+            <div class="card p-4">
+                <div class="card-body">
+                    <div class="table-responsive-sm">
+                        <table id="datatable_ordenes" class="table table-hover table-bordered">
+                            <thead>
+                                <tr class="text-dark text">
+                                    <th scope="col">Nombre del Paciente</th>
+                                    <th scope="col">Nombre del medico</th>
+                                    <th scope="col">Examenes</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Total a pagar</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="">@item.NombreCompleto</td>
+                                        <td class="">@{@String.Concat(item.Nombres, " ", @item.Apellidos)}</td>
+                                        <td class="">@item.CantidadDeExamenes</td>
+                                        <td class="">@item.FechaOrden.ToString("yyyy-MM-dd")</td>
+                                        <td class="">C$@item.total</td>
+                                        <td>
+                                            <button onclick="ListarExamenes(@item.Id)" class="btn btn-sm btn-primary btn-personalizados bi bi-file-earmark-text-fill" data-bs-toggle="modal" data-bs-target="#ModalDetallOrden"></button>
+                                            <a class="btn btn-sm btn-success bi bi-file-earmark-bar-graph-fill" href="@Url.Action("Index", "Resultado", new { id = item.Id })"></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="~/Scripts/Ordenes/Ordenes.js"></script>
+<style>
+.custom-alert {
+    position: fixed;
+    top: 50px;
+    right: 20px;
+    z-index: 1050; /* Asegura que las alertas estén por encima de otros elementos */
+    max-width: 300px; /* Limita el ancho máximo */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Añade sombra para un efecto flotante */
+    padding: 15px;
+    animation: fadeOut 10s forwards; /* Activa la animación de desaparición */
+}
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(() => {
+            const alerts = document.querySelectorAll(".custom-alert");
+            alerts.forEach(alert => alert.remove());
+        }, 10000); // 10,000ms = 10 segundos
+    });
+</script>

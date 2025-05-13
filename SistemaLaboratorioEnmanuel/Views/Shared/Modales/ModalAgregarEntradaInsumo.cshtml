@@ -1,0 +1,38 @@
+﻿<div class="modal fade" id="abrirModalEntradaInv" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Entrada de insumo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <label for="Cantidad" class="col-sm-5 col-form-label">Cantidad: </label>
+                    <div class="col-sm-7">
+                        <input name="Cantidad" id="Cantidad" type="number" class="form-control"> <!--Aqui esta el monto-->
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="Costo" class="col-sm-5 col-form-label">Costo Unitario: </label>
+                    <div class="col-sm-7">
+                        <input name="Costo" id="Costo" type="number" class="form-control"> <!--Aqui esta el monto-->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button> 
+                <input class="btn btn-primary" id="btnGuardarAbono" type="submit" value="Guardar">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">          
+    function ModalClick(idInsumo) {
+        document.getElementById("IdInsumo").value = idInsumo;    //Le pasamos el Id del insumo al text hiden  
+    };
+</script>
+
+

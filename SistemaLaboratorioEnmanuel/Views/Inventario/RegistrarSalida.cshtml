@@ -1,0 +1,169 @@
+﻿@model SistemaLaboratorioEnmanuel.Models.ViewModels.RegistrarSalidaViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    ViewBag.Title = "Registrar Salida de Inventario";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>}
+
+<div class="row">
+    <div class="col-12 mb-4">
+        <!-- Inicio Encabezado -->
+        <div class="card-plantilla">
+            <div class="card-header-plantilla">
+                <h1 class="card-titulo-plantilla">Registrar Salida de Inventario</h1>
+            </div>
+        </div>
+        <!-- Fin Encabezado -->
+    </div>
+
+    <section class="section">
+        <div class="col-12">
+            <div class="card p-4">
+                <div class="card-body">
+                    <div class="row mb-2 mt-3">
+                        <!-- Resultado asociado -->
+                        <div class="form-group col-md-4">
+                            <label for="ResultadoAsociado" class="form-label">Resultado Asociado</label>
+                            <input type="text" class="form-control" id="ResultadoAsociado" value="@Model.NombreResultado" readonly />
+                        </div>
+
+                        <!-- Buscar Insumos -->
+                        <div class="form-group col-md-4">
+                            <label for="BuscarInsumos" class="form-label">Buscar Insumos</label>
+                            <div class="input-group mb-3">
+                                @if (Model.InsumosSeleccionados.Count == 0)
+                                {
+                                    <button class="btn btn-primary" type="button" id="btnBuscarInsumo" data-bs-toggle="modal" data-bs-target="#BuscarInsumosModal">
+                                        <span class="bi bi-search"></span>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-primary" type="button" disabled>
+                                        <span class="bi bi-search"></span>
+                                    </button>
+                                }
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12 text-end">
+                            <form id="formGuardarSalida" method="post" action="@Url.Action("GuardarSalida", "Inventario")">
+                                <input type="hidden" name="IdResultado" value="@Model.IdResultado" />
+                                <input type="hidden" name="IdDetalleOrden" value="@Model.IdDetalleOrden" />
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Stock Disponible</th>
+                                                <th>Cantidad a Retirar</th>
+                                                <th>Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabla_InsumosSeleccionados">
+                                            @foreach (var insumo in Model.InsumosSeleccionados)
+                                            {
+                                                <tr id="fila_@insumo.Id">
+                                                    <td>
+                                                        @insumo.Nombre
+                                                        <input type="hidden" name="InsumosSeleccionados[@insumo.Id].Id" value="@insumo.Id" />
+                                                        <input type="hidden" name="InsumosSeleccionados[@insumo.Id].Nombre" value="@insumo.Nombre" />
+                                                    </td>
+                                                    <td>
+                                                        @insumo.Stock
+                                                        <input type="hidden" name="InsumosSeleccionados[@insumo.Id].Stock" value="@insumo.Stock" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" name="InsumosSeleccionados[@insumo.Id].Cantidad" class="form-control" value="@insumo.Cantidad" readonly />
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button type="button" class="btn btn-danger" disabled>
+                                                            <span class="bi bi-trash"></span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                @if (Model.InsumosSeleccionados.Count == 0)
+                                {
+                                    <button type="button" class="btn btn-success" onclick="prepareAndSubmitForm()">Guardar Salida</button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-success" disabled>Guardar Salida</button>
+                                }
+
+                                <!-- <a href="@Url.Action("RegistrarResultado", "Resultado", new { idDetalleOrden = Model.IdResultado})" class="btn btn-secondary">Cancelar</a> -->
+                                <a href="@Url.Action("Index", "Resultado", new { id = Model.IdOrden})" class="btn btn-secondary">Cancelar</a>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Modal para buscar insumos -->
+<div class="modal fade" id="BuscarInsumosModal" tabindex="-1" aria-labelledby="BuscarInsumosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Seleccionar Insumos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Stock Disponible</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla_InsumosDisponibles">
+                            @foreach (var insumo in Model.InsumosDisponibles)
+                            {
+                                <tr>
+                                    <td>@insumo.Nombre</td>
+                                    <td>@insumo.Stock</td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-primary" onclick="AgregarInsumo(@insumo.Id, '@insumo.Nombre', @insumo.Stock)">
+                                            <span class="bi bi-plus-circle"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/Inventario/Inventario.js">
+
+</script>

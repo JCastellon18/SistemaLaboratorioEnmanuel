@@ -1,0 +1,98 @@
+﻿<!--Este es el Index de Facturas-->
+@model List<SistemaLaboratorioEnmanuel.Models.sp_TodasFacturacionesAbonarresultado_Result>
+
+@{
+    ViewBag.Title = "Facturas";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <!-- Inicio Encabezado -->
+        <div class="card-plantilla">
+            <div class="card-header-plantilla">
+                <h1 class="card-titulo-plantilla">Facturas</h1>
+            </div>
+        </div><!-- Fin encabezado -->
+        <!-- Inicio Barra Busqueda -->
+        <!--<div class="barra-busqueda col-sm-12">
+            <div class="input-group">
+                <input class="form-control" type="text" id="txtNombre" tabindex="1" placeholder="Buscar Facturas" />
+                <button class="btn btn-primary btn-personalizados me-1 bi-search" id="btnBuscarFacturas" tabindex="2"> </button>
+                <button class="btn btn-primary btn-personalizados bi-eraser-fill" id="btnLimpiar" tabindex="3"> </button>
+            </div>
+        </div>-->
+        <!-- Fin barra busqueda -->
+        <!-- Inicio head tabla -->
+        <div class="head-table col-sm-12">
+            <!--<div class="input-group head-table" style="float: right">
+                <a class="btn btn-primary me-1" href="@Url.Action("GenerarExcel", "Facturas")" style="background: #1f7b2d">Excel <span class="bi bi-file-earmark-ruled-fill"></span></a>-->
+                @*<a class="btn btn-primary" href="@Url.Action("GenerarExcel", "Facturas")" style="background: #d63031 ">PDF <span class="bi bi-file-earmark-pdf-fill"></span></a>*@
+            <!--</div>-->
+        </div> <!-- Fin head tabla -->
+    </div>
+</div>
+
+@*Aqui va lo de abonos*@
+
+@Html.Partial("Modales/ModalDetalleFactura")
+<form action="@Url.Action("Abono")" method="post">
+    @Html.Partial("Modales/ModalAbonar")
+    <input name="IdFactura" type="hidden" value="" id="IdFactura" />
+</form>
+
+
+<section class="section">
+    <div class="col-lg-12">
+        <div class="card p-2">
+            <div class="card-body pt-3">
+                <div class="table-responsive-sm">
+                    <table id="datatable_factura" class="table table-hover table-bordered">
+                        <thead>
+                            <tr class="text-dark text">
+                                <th class="" scope="col">Paciente</th>
+                                <th class="" scope="col">Fecha de la orden</th>
+                                <th class="" scope="col">Total de examenes</th>
+                                <th class="" scope="col">Deuda Pendiente</th>
+                                <th class="" scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+                            @foreach (var item in Model)
+                            {
+
+                                if (item.diferencia > 0)
+                                {
+                                    <tr>
+                                        <td class="table-warning">@item.NombrePaciente</td>
+                                        <td class="table-warning">@item.FechaOrden.ToString("d")</td>
+                                        <td class="table-warning">@item.CantidadExamenes</td>
+                                        <td class="table-warning">@item.diferencia</td>
+                                        <td class="table-warning">
+                                            <button class="btn btn-sm btn-success " onclick="ModalClick(@item.Idfactura,@item.diferencia)" id="@item.Idfactura" data-bs-toggle="modal" data-bs-target="#abrirModalAbonar"><i class="bi bi-cash-coin"></i></button>
+                                            <button onclick="ListarDetalles(@item.Idfactura)" class="btn btn-sm btn-primary btn-personalizados " data-bs-toggle="modal" data-bs-target="#ModalDetallFact"><i class="bi bi-eye-fill"></i></button>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td class="">@item.NombrePaciente</td>
+                                        <td class="">@item.FechaOrden.ToString("d")</td>
+                                        <td class="">@item.CantidadExamenes</td>
+                                        <td class="">@item.diferencia</td>
+                                        <td class="">
+                                            <button class="btn btn-sm btn-secondary" id="btnAbonar"><i class="bi bi-cash-coin"></i></button>
+                                            <button onclick="ListarDetalles(@item.Idfactura)" class="btn btn-sm btn-primary btn-personalizados" data-bs-toggle="modal" data-bs-target="#ModalDetallFact"><i class="bi bi-eye-fill"></i></button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Scripts/Facturacion/CargarDetalles.js"></script>
